@@ -1,55 +1,40 @@
 <?php
 
-namespace ChatBlock;
+namespace chatblock;
 
-use pocketmine\Server;
+use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\Listener;
-use pocketmine\utils\TextFormat;
-use pocketmine\utils\Config;
 use pocketmine\command\Command;
 
-Class main extends PluginBase implements Listener{
-        public $temp = array();
-    
-    public function onLoad(){
-    }
-    
+class Main extends PluginBase implements Listener{
+    public $temp = [];
     public function onEnable(){
-    $this->getLogger()->info(TextFormat::DARK_BLUE ."ChatBlock Enabled!");
-    $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
-    
     public function onChat(PlayerChatEvent $event){
-            $message = $event->getMessage();
-            $sender = $event->getPlayer()->getName();
-            $recipients = $event->getRecipients();
-            $event->setCancelled();
-            foreach($recipients as $x) {
-                $s = $x->getName();
-                if (isset($this->temp[$s])){
-                    unset($recipients[$x]);
-                }
+        $recipients = $event->getRecipients();
+        for($i = 0; $i < count($recipients); $i++) {
+            if (isset($this->temp[$recipients[$i]->getName()])){
+                unset($recipients[$i]);
             }
-            foreach($recipients as $i) {
-                $i->sendMessage("<" . $sender . "> " . $message);
-            }
+        }
+        $event->setRecipients($recipients);
     }
-    
     public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
-        switch ($command) {
+        switch ($command->getName()) {
         case "mute":
             $player = $sender->getName();
-            $this->temp[$player] = $player;
+            $this->temp[$player] = true;
             $sender->sendMessage("[ChatBlock] Your chat has been muted!");
-            $sender->sendMessage("[ChatBlock] You will cease to recieve chat messages");
+            $sender->sendMessage("[ChatBlock] You will cease to receive chat messages.");
             break;
         
         case "unmute";
             $player = $sender->getName();
             unset($this->temp[$player]);
-            $sender->sendMessage("[ChatBlock] Your chat has been unmuted");
+            $sender->sendMessage("[ChatBlock] Your chat has been unmuted.");
         }       
     }
 }
