@@ -1,0 +1,14 @@
+---
+name: ChatBlock
+main: ChatBlock\main
+version: 1.0.0
+api: [1.0.0]
+description: Plugin for Pocketmine API 1.0.0 
+website: none
+commands: 
+    mute:
+        description: "mutes chat for the player that executes it"
+        
+    unmute: 
+        description: "unmutes chat for player that previously had it muted"
+---
