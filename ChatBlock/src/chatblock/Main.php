@@ -1,5 +1,4 @@
 <?php
-
 namespace chatblock;
 
 use pocketmine\command\CommandSender;
@@ -24,17 +23,17 @@ class Main extends PluginBase implements Listener{
     }
     public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
         switch ($command->getName()) {
-        case "mute":
-            $player = $sender->getName();
-            $this->temp[$player] = true;
-            $sender->sendMessage("[ChatBlock] Your chat has been muted!");
-            $sender->sendMessage("[ChatBlock] You will cease to receive chat messages.");
-            break;
-        
-        case "unmute";
-            $player = $sender->getName();
-            unset($this->temp[$player]);
-            $sender->sendMessage("[ChatBlock] Your chat has been unmuted.");
+            case "mute":
+                $player = $sender->getName();
+                $this->temp[$player] = true;
+                $sender->sendMessage("[ChatBlock] Your chat has been muted!");
+                $sender->sendMessage("[ChatBlock] You will cease to receive chat messages.");
+                break;
+            case "unmute";
+                $player = $sender->getName();
+                unset($this->temp[$player]);
+                $sender->sendMessage("[ChatBlock] Your chat has been unmuted.");
+                break;
         }       
     }
 }
